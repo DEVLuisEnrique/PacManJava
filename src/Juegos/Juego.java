@@ -31,6 +31,131 @@ public class Juego {
     JLabel fondoMenu;
     ImageIcon ImagenFondoMenu;
     
+    //Juego 
+    JPanel Paneljuego;
+    JLabel fondojuego;
+    ImageIcon ImagenFondojuego;
+    int mat[][];
+    JLabel matrix[][];
+    String jugador;
+    JLabel nombre;
+    JLabel records;
+    String puntos;
+    
+ //////////////////////////////////////////
+    public void jugar()
+      {
+         
+         //PANEL
+         PanelMenu.setVisible(false);
+         Paneljuego = new JPanel();
+         Paneljuego.setLayout(null);
+         Paneljuego.setBounds(0, 0,ventana.getWidth() , ventana.getHeight());
+         Paneljuego.setVisible(true);
+         
+                
+        //FONDO
+         fondojuego = new JLabel();
+         fondojuego.setBounds(0, 0, ventana.getWidth(), ventana.getHeight());
+         ImagenFondojuego = new ImageIcon(getClass().getResource("/Imagenes/fondojuego.png"));
+         ImagenFondojuego = new ImageIcon(ImagenFondoMenu.getImage().getScaledInstance(ventana.getWidth(), ventana.getHeight(), Image.SCALE_DEFAULT));
+         fondojuego.setIcon(ImagenFondojuego);
+         fondojuego.setVisible(true);
+         Paneljuego.add(fondojuego);
+          
+          for (int i = 0; i < mat.length; i++) {
+              
+              for (int j = 0; j < mat.length; j++) {
+                  matrix[i][j].setIcon(new ImageIcon(getClass().getResource("/Imagenes/"+mat[i][j]+".png")));
+                  matrix[i][j].setBounds(100+(i*30), 100+(j*30), 30, 30);
+                  matrix[i][j].setVisible(true);
+                  
+                  Paneljuego.add(matrix[i][j],0);
+                  
+              }
+              
+          }
+          
+         
+         
+         ventana.add(Paneljuego);
+      }
+    
+    public int[][] tablero(int opcion)
+     {
+         int aux1[][] = new int[15][15];
+         
+         if(opcion == 1)
+            {
+                int aux[][] ={
+                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+                    {2,1,1,1,1,1,2,1,1,1,1,1,1,1,2},
+                    {2,1,2,2,1,2,2,2,1,2,2,1,2,1,2},
+                    {2,1,2,2,1,2,1,2,2,1,2,1,2,2,2},
+                    {2,1,2,1,1,2,2,1,1,1,1,1,1,1,2},
+                    {2,1,2,2,1,1,2,1,2,2,1,1,2,1,2},
+                    {2,1,2,2,1,1,1,1,2,2,1,2,2,1,2},
+                    {2,2,1,1,1,2,1,1,2,1,1,1,2,1,2},
+                    {2,1,1,2,1,2,2,1,1,2,2,1,1,1,2},
+                    {2,1,2,2,1,2,2,1,1,1,2,1,2,2,2},
+                    {2,1,2,1,1,1,2,2,2,1,1,1,2,1,2},
+                    {2,1,2,2,1,2,1,1,2,2,1,1,2,1,2},
+                    {2,1,2,2,1,2,1,2,2,1,1,1,1,1,2},
+                    {2,1,1,1,1,1,1,1,1,1,1,1,1,1,2},
+                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+                    };
+                return aux; 
+                }
+                
+               
+            
+          if(opcion == 2)
+            {
+                int aux[][] ={
+                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+                    {2,1,1,1,1,1,2,1,1,1,1,1,1,1,2},
+                    {2,1,2,2,1,2,1,2,1,2,2,1,2,1,2},
+                    {2,1,2,2,1,2,1,2,2,1,2,1,2,2,2},
+                    {2,1,2,1,1,2,2,2,1,2,1,1,1,1,2},
+                    {2,1,2,2,1,1,2,2,2,2,1,1,2,1,2},
+                    {2,1,2,2,1,1,1,2,2,2,1,2,2,1,2},
+                    {2,2,2,2,1,2,1,1,2,2,2,2,2,1,2},
+                    {2,1,2,2,1,2,2,1,1,2,2,2,2,1,2},
+                    {2,1,2,2,1,2,2,1,1,1,2,2,2,1,2},
+                    {2,1,2,1,2,2,2,1,2,1,1,2,2,1,2},
+                    {2,1,2,2,1,2,1,1,2,2,1,1,2,1,2},
+                    {2,1,2,2,1,2,1,2,2,2,2,1,1,1,2},
+                    {2,1,2,1,1,1,1,2,2,2,2,2,2,1,2},
+                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},};
+                
+              return aux;  
+            }
+           if(opcion == 3)
+            {
+                int aux[][] ={
+                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+                    {2,1,1,1,1,1,2,1,1,1,1,1,1,1,2},
+                    {2,1,2,2,1,2,1,2,1,2,2,1,2,1,2},
+                    {2,1,2,2,1,2,1,2,2,1,2,1,2,2,2},
+                    {2,1,2,1,1,2,2,2,1,2,1,1,1,1,2},
+                    {2,1,2,2,1,1,2,2,2,2,1,1,2,1,2},
+                    {2,1,2,2,1,1,1,2,2,2,1,2,2,1,2},
+                    {2,2,2,2,1,2,1,1,2,2,2,2,2,1,2},
+                    {2,1,2,2,1,2,2,1,1,2,2,2,2,1,2},
+                    {2,1,2,2,1,2,2,1,1,1,2,2,2,1,2},
+                    {2,1,2,1,2,2,2,1,2,1,1,2,2,1,2},
+                    {2,1,2,2,1,2,1,1,2,2,1,1,2,1,2},
+                    {2,1,2,2,1,2,1,2,2,2,2,1,1,1,2},
+                    {2,1,2,1,1,1,1,2,2,2,2,2,2,1,2},
+                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},};
+                
+              return aux;  
+            }
+           
+           return aux1;
+     }
+    
+////////////////////////////////////////////////
     public Juego()//COSNTRUCTOR
         {
         //VENTANA
@@ -70,7 +195,7 @@ public class Juego {
             for (int i = 0; i < botones.length; i++) {
               botones[i] = new JButton();
             }
-         
+             
          iniciar.addMouseListener(new MouseAdapter() {
          
             public void mousePressed(MouseEvent e)
@@ -82,7 +207,16 @@ public class Juego {
          
          
          });
-                
+        //juego
+        mat=new int[15][15];
+        matrix = new JLabel[15][15];
+        for (int i = 0; i < mat.length; i++) {
+                for (int j = 0; j < mat.length; j++) {
+                    matrix[i][j] = new JLabel();
+                }
+            }
+            mat = tablero(1);
+        
         
          /****************/
          ventana.add(PanelPresentacion);
@@ -103,7 +237,7 @@ public class Juego {
         //FONDO
          fondoMenu = new JLabel();
          fondoMenu.setBounds(0, 0, ventana.getWidth(), ventana.getHeight());
-         ImagenFondoMenu = new ImageIcon(getClass().getResource("/Imagenes/fondo1.png"));
+         ImagenFondoMenu = new ImageIcon(getClass().getResource("/Imagenes/fondojuego.png"));
          ImagenFondoMenu = new ImageIcon(ImagenFondoMenu.getImage().getScaledInstance(ventana.getWidth(), ventana.getHeight(), Image.SCALE_DEFAULT));
          fondoMenu.setIcon(ImagenFondoMenu);
          fondoMenu.setVisible(true);
@@ -136,7 +270,12 @@ public class Juego {
          
             public void mousePressed(MouseEvent e)
                        {
-                          
+                          jugador = JOptionPane.showInputDialog(ventana,"Nombre del jugador","Escribe aqui");
+                          while(jugador==null || jugador.compareTo("Escribe aqui")==0 || jugador.compareTo("")==0)
+                            {
+                                jugador = JOptionPane.showInputDialog(ventana,"Debes ingresar usuarios","Escribe aqui");
+                            }
+                          jugar();
                        }
        
          });
