@@ -4,6 +4,10 @@ package Juegos;
 import java.awt.Color;
 import static java.awt.Frame.NORMAL;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import static java.awt.image.ImageObserver.HEIGHT;
@@ -14,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 
 public class Juego {
@@ -37,13 +42,17 @@ public class Juego {
     ImageIcon ImagenFondojuego;
     int mat[][];
     JLabel matrix[][];
+    int px,py;
+    int fanx,fany;
     String jugador;
     JLabel nombre;
     JLabel records;
-    String puntos;
+    int puntos;
+    int abajo,arriba,izq,der;
+    Timer timer;
     
  //////////////////////////////////////////
-    public void jugar()
+    public void jugar()//FUNCION JUGAR
       {
          
          //PANEL
@@ -75,11 +84,45 @@ public class Juego {
               }
               
           }
+          //nombre de jugador
+          nombre = new JLabel("Jugador: "+jugador);
+          nombre.setBounds(20, 20, 150, 30);
+          nombre.setVisible(true);
+          nombre.setForeground(Color.white);
+          Paneljuego.add(nombre,0);
+          
+          //puntuacion de jugador
+          records = new JLabel("Puntos: "+puntos);
+          records.setBounds(ventana.getWidth()-(150+20), 20, 150, 30);
+          records.setForeground(Color.white);
+          Paneljuego.add(records,0);
+          records.setVisible(true);
+          /////
+          MoverPacman();
+          
+          
           
          
          
          ventana.add(Paneljuego);
       }
+    
+    public void pintarMatriz(){//PINTAR MATRIZ
+    
+        for (int i = 0; i < mat.length; i++) {
+
+                  for (int j = 0; j < mat.length; j++) {
+                      matrix[i][j].setIcon(new ImageIcon(getClass().getResource("/Imagenes/"+mat[i][j]+".png")));
+                      matrix[i][j].setBounds(100+(i*30), 100+(j*30), 30, 30);
+                      matrix[i][j].setVisible(true);
+
+                      Paneljuego.add(matrix[i][j],0);
+
+                  }
+
+              }
+    
+    }
     
     public int[][] tablero(int opcion)
      {
@@ -89,18 +132,18 @@ public class Juego {
             {
                 int aux[][] ={
                     {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
-                    {2,1,1,1,1,1,2,1,1,1,1,1,1,1,2},
-                    {2,1,2,2,1,2,2,2,1,2,2,1,2,1,2},
-                    {2,1,2,2,1,2,1,2,2,1,2,1,2,2,2},
-                    {2,1,2,1,1,2,2,1,1,1,1,1,1,1,2},
-                    {2,1,2,2,1,1,2,1,2,2,1,1,2,1,2},
-                    {2,1,2,2,1,1,1,1,2,2,1,2,2,1,2},
-                    {2,2,1,1,1,2,1,1,2,1,1,1,2,1,2},
-                    {2,1,1,2,1,2,2,1,1,2,2,1,1,1,2},
-                    {2,1,2,2,1,2,2,1,1,1,2,1,2,2,2},
-                    {2,1,2,1,1,1,2,2,2,1,1,1,2,1,2},
-                    {2,1,2,2,1,2,1,1,2,2,1,1,2,1,2},
-                    {2,1,2,2,1,2,1,2,2,1,1,1,1,1,2},
+                    {2,1,1,1,1,1,1,1,1,1,1,1,1,1,2},
+                    {2,1,2,2,1,2,1,2,1,2,2,1,2,1,2},
+                    {2,1,2,1,1,2,1,2,1,1,2,1,2,1,2},
+                    {2,1,2,1,1,1,1,1,1,1,1,1,1,1,2},
+                    {2,1,2,1,1,2,2,2,2,1,1,1,2,1,2},
+                    {2,1,2,2,1,2,1,1,2,1,1,2,2,1,2},
+                    {2,1,1,1,1,2,1,1,1,1,1,1,2,1,2},
+                    {2,1,2,2,1,2,1,1,1,1,2,1,1,1,2},//d
+                    {2,1,2,1,1,2,1,1,2,1,2,1,1,1,2},
+                    {2,1,2,1,1,2,2,2,2,1,2,1,1,1,2},
+                    {2,1,2,1,1,1,1,1,1,1,1,1,2,1,2},
+                    {2,1,2,2,1,2,1,2,2,1,1,2,2,1,2},
                     {2,1,1,1,1,1,1,1,1,1,1,1,1,1,2},
                     {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
                     };
@@ -198,15 +241,13 @@ public class Juego {
              
          iniciar.addMouseListener(new MouseAdapter() {
          
-            public void mousePressed(MouseEvent e)
-                       {
+            public void mousePressed(MouseEvent e){
                           menu();
                           eventoMenu();
                        }
-         
-         
-         
+          
          });
+         
         //juego
         mat=new int[15][15];
         matrix = new JLabel[15][15];
@@ -216,12 +257,179 @@ public class Juego {
                 }
             }
             mat = tablero(1);
-        
-        
+            //Posicion de PacMan en el tablero
+            px=1;
+            py=1;
+            mat[px][py]=3;
+          //Posicion del fantasma en el tablero
+            fanx=8;
+            fany=6;
+            mat[fanx][fany]=7;
+            
+            abajo=0;
+            arriba=0;
+            izq=0;
+            der=0;
+            
+            
          /****************/
          ventana.add(PanelPresentacion);
          ventana.setVisible(true);
         }
+    
+    public void MoverPacman(){//FUNCION PARA ANIMAR EL PACMAN
+        
+        
+        
+        timer = new Timer (100,new ActionListener ()//TIMER UTILIZADO PARA AJUSTAR LA VELOCIDAD DE MOVIMIENTO
+        {
+            public void actionPerformed(ActionEvent e)
+            {  
+               if(arriba==1 && ( mat[px][py-1]==1 || mat[px][py-1]==0 ))//MOVER Y COMER PUNTOS HACIA ARRIBA
+                {
+                        if(mat[px][py-1]==1)
+                            {
+                                puntos=puntos+10;
+                                records.setText("Puntos: "+puntos);
+                            }
+                        mat[px][py]=0;
+                        py=py-1;
+                        mat[px][py]=5;
+                        pintarMatriz();
+                        
+                } 
+               
+               if(abajo==1 && (mat[px][py+1]==1 || mat[px][py+1]==0 ))//MOVER Y COMER PUNTOS HACIA ABAJO
+                {
+                        if(mat[px][py+1]==1)
+                            {
+                                puntos=puntos+10;
+                                records.setText("Puntos: "+puntos);
+                            }
+                        mat[px][py]=0;
+                        py=py+1;
+                        mat[px][py]=4;
+                        pintarMatriz();
+                        
+                       
+                        
+                } 
+               
+               if(izq==1 && (mat[px-1][py]==1 || mat[px-1][py]==0 ))//MOVER Y COMER PUNTOS A LA IZQUIERDA
+                {
+                        if(mat[px-1][py]==1)//GENERACION DE LOS PUNTOS
+                            {
+                                puntos=puntos+10;
+                                records.setText("Puntos: "+puntos);
+                            }
+                        mat[px][py]=0;
+                        px=px-1;
+                        mat[px][py]=6;
+                        pintarMatriz();
+                        
+                } 
+               if(der==1 && (mat[px+1][py]==1 || mat[px+1][py]==0 ))//MOVER Y COMER PUNTOS A LA DERECHA
+                {
+                       if(mat[px+1][py]==1)//Generacion de los puntos
+                            {
+                                puntos=puntos+10;
+                                records.setText("Puntos: "+puntos);
+                            }
+
+                        mat[px][py]=0;
+                        px=px+1;
+                        mat[px][py]=3;
+                        pintarMatriz();
+                        
+                } 
+               
+             //CONDICIONES PARA GANAR
+            int enc=0;
+                for (int i = 0; i < mat.length && enc==0; i++) {
+                    for (int j = 0; j < mat.length && enc==0; j++) {
+                        if(mat[i][j]==1)
+                            {
+                                enc=1;
+                            }
+                    }
+                }
+                if(enc==0)
+                    {
+                     JOptionPane.showMessageDialog(ventana, "Felicidades Ganaste!!");
+                     Paneljuego.setVisible(false);
+                     PanelMenu.setVisible(true);
+                     timer.stop();
+                    }
+                
+            }});     
+        
+        
+        timer.start();
+        ventana.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+              //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {//PRESIONAR TECLA Y SE MANTIENE PRESIONADA
+                
+                if(e.getKeyCode() == KeyEvent.VK_UP)//MOVER TECLA ARRIBA
+                    {
+                        System.out.println("Tecla hacia arriba");
+                       if(mat[px][py-1]==1 || mat[px][py-1]==0 ){  
+                            arriba =1;
+                            abajo=0;
+                            izq=0;
+                            der=0;
+                       }
+                    }
+                
+                if(e.getKeyCode() == KeyEvent.VK_DOWN)//MOVER TECLA ABAJO
+                    {
+                        System.out.println("Tecla hacia abajo");
+                       if(mat[px][py+1]==1 || mat[px][py+1]==0 ){ 
+                            arriba =0;
+                            abajo=1;
+                            izq=0;
+                            der=0;
+                       }
+                    }
+                
+                if(e.getKeyCode() == KeyEvent.VK_LEFT)//MOVER TECLA IZQUIERDA
+                    {
+                        System.out.println("Tecla hacia izquierda");
+                       if(mat[px-1][py]==1 || mat[px-1][py]==0 ){ 
+                            arriba =0;
+                            abajo=0;
+                            izq=1;
+                            der=0; 
+                        }
+                    }
+                
+                if(e.getKeyCode() == KeyEvent.VK_RIGHT)//MOVER TECLA DERECHA
+                    {
+                        System.out.println("Tecla hacia derecha");
+                       
+                      if(mat[px+1][py]==1 || mat[px+1][py]==0 ){ 
+                        arriba =0;
+                        abajo=0;
+                        izq=0;
+                        der=1;
+                      }
+                    }
+                
+                // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+            
+            @Override
+            public void keyReleased(KeyEvent e) {//PRESIONAR TECLA Y LA SUELTA
+               // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+    
+    
+    }
     
     public void menu(){
      
