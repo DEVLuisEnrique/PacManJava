@@ -19,12 +19,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
+import Juegos.FotosEstudiantes;
+import java.util.Locale;
 
 public class Juego {
     
      //Atributos
-    JFrame ventana;
+    static JFrame ventana;
     JPanel PanelPresentacion; 
     JButton  iniciar;
     JLabel fondopresentacion;
@@ -37,13 +38,15 @@ public class Juego {
     ImageIcon ImagenFondoMenu;
     
     //Juego 
-    JPanel Paneljuego;
+    static JPanel Paneljuego;
     JLabel fondojuego;
+    JLabel Fotos; 
     ImageIcon ImagenFondojuego;
-    int mat[][];
-    JLabel matrix[][];
+    static int mat[][];
+    int nivel;
+    static JLabel matrix[][];
     int px,py;
-    int fanx,fany;
+    //int fanx,fany;
     String jugador;
     JLabel nombre;
     JLabel records;
@@ -51,6 +54,12 @@ public class Juego {
     int abajo,arriba,izq,der;
     Timer timer;
     
+    //fantasmas
+    Fantasmas fantasma1;
+   // Fantasmas fantasma2;
+   // Fantasmas fantasma3;
+    static int matAux[][];
+      
  //////////////////////////////////////////
     public void jugar()//FUNCION JUGAR
       {
@@ -67,19 +76,23 @@ public class Juego {
          fondojuego = new JLabel();
          fondojuego.setBounds(0, 0, ventana.getWidth(), ventana.getHeight());
          ImagenFondojuego = new ImageIcon(getClass().getResource("/Imagenes/fondojuego.png"));
+         //ImagenFondojuego = new ImageIcon("src/Imagenes/fondojuego.png");
          ImagenFondojuego = new ImageIcon(ImagenFondoMenu.getImage().getScaledInstance(ventana.getWidth(), ventana.getHeight(), Image.SCALE_DEFAULT));
          fondojuego.setIcon(ImagenFondojuego);
          fondojuego.setVisible(true);
+         
          Paneljuego.add(fondojuego);
           
           for (int i = 0; i < mat.length; i++) {
               
               for (int j = 0; j < mat.length; j++) {
-                  matrix[i][j].setIcon(new ImageIcon(getClass().getResource("/Imagenes/"+mat[i][j]+".png")));
+                  //matrix[i][j].setIcon(new ImageIcon(getClass().getResource("/Imagenes/"+mat[i][j]+".png")));
+                  matrix[i][j].setIcon(new ImageIcon("src/Imagenes/"+mat[i][j]+".png"));
                   matrix[i][j].setBounds(100+(i*30), 100+(j*30), 30, 30);
                   matrix[i][j].setVisible(true);
                   
                   Paneljuego.add(matrix[i][j],0);
+                  
                   
               }
               
@@ -99,7 +112,9 @@ public class Juego {
           records.setVisible(true);
           /////
           MoverPacman();
-          
+         fantasma1 = new Fantasmas(8,6);
+         //fantasma2 = new Fantasmas(8,6);
+         //fantasma3 = new Fantasmas(8,6);
           
           
          
@@ -107,12 +122,13 @@ public class Juego {
          ventana.add(Paneljuego);
       }
     
-    public void pintarMatriz(){//PINTAR MATRIZ
+    public static void pintarMatriz(){//PINTAR MATRIZ
     
         for (int i = 0; i < mat.length; i++) {
 
                   for (int j = 0; j < mat.length; j++) {
-                      matrix[i][j].setIcon(new ImageIcon(getClass().getResource("/Imagenes/"+mat[i][j]+".png")));
+                      //matrix[i][j].setIcon(new ImageIcon(getClass().getResource("/Imagenes/"+mat[i][j]+".png")));
+                      matrix[i][j].setIcon(new ImageIcon("src/Imagenes/"+mat[i][j]+".png"));
                       matrix[i][j].setBounds(100+(i*30), 100+(j*30), 30, 30);
                       matrix[i][j].setVisible(true);
 
@@ -123,28 +139,28 @@ public class Juego {
               }
     
     }
-    
+    //TABLEROS NIVELES DEL JUEGO
     public int[][] tablero(int opcion)
      {
-         int aux1[][] = new int[15][15];
+         int aux1[][]= new int[15][15];
          
          if(opcion == 1)
             {
-                int aux[][] ={
+                int aux[][] ={//15*15
                     {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
-                    {2,1,1,1,1,1,1,1,1,1,1,1,1,1,2},
+                    {2,1,1,1,1,1,1,2,1,1,1,1,1,1,2},
                     {2,1,2,2,1,2,1,2,1,2,2,1,2,1,2},
                     {2,1,2,1,1,2,1,2,1,1,2,1,2,1,2},
                     {2,1,2,1,1,1,1,1,1,1,1,1,1,1,2},
-                    {2,1,2,1,1,2,2,2,2,1,1,1,2,1,2},
+                    {2,1,2,1,1,2,1,2,2,1,1,1,2,2,2},
                     {2,1,2,2,1,2,1,1,2,1,1,2,2,1,2},
                     {2,1,1,1,1,2,1,1,1,1,1,1,2,1,2},
                     {2,1,2,2,1,2,1,1,1,1,2,1,1,1,2},//d
                     {2,1,2,1,1,2,1,1,2,1,2,1,1,1,2},
-                    {2,1,2,1,1,2,2,2,2,1,2,1,1,1,2},
+                    {2,1,2,1,1,2,1,2,2,1,2,1,1,1,2},
                     {2,1,2,1,1,1,1,1,1,1,1,1,2,1,2},
                     {2,1,2,2,1,2,1,2,2,1,1,2,2,1,2},
-                    {2,1,1,1,1,1,1,1,1,1,1,1,1,1,2},
+                    {2,1,1,1,1,2,1,1,1,1,1,1,1,1,2},
                     {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
                     };
                 return aux; 
@@ -153,23 +169,29 @@ public class Juego {
                
             
           if(opcion == 2)
-            {
-                int aux[][] ={
-                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
-                    {2,1,1,1,1,1,2,1,1,1,1,1,1,1,2},
-                    {2,1,2,2,1,2,1,2,1,2,2,1,2,1,2},
-                    {2,1,2,2,1,2,1,2,2,1,2,1,2,2,2},
-                    {2,1,2,1,1,2,2,2,1,2,1,1,1,1,2},
-                    {2,1,2,2,1,1,2,2,2,2,1,1,2,1,2},
-                    {2,1,2,2,1,1,1,2,2,2,1,2,2,1,2},
-                    {2,2,2,2,1,2,1,1,2,2,2,2,2,1,2},
-                    {2,1,2,2,1,2,2,1,1,2,2,2,2,1,2},
-                    {2,1,2,2,1,2,2,1,1,1,2,2,2,1,2},
-                    {2,1,2,1,2,2,2,1,2,1,1,2,2,1,2},
-                    {2,1,2,2,1,2,1,1,2,2,1,1,2,1,2},
-                    {2,1,2,2,1,2,1,2,2,2,2,1,1,1,2},
-                    {2,1,2,1,1,1,1,2,2,2,2,2,2,1,2},
-                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},};
+            {   
+                int aux[][] ={//20*15
+                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+                    {2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,2},
+                    {2,1,2,2,1,2,1,2,1,2,2,1,2,1,2,1,2,1,1,2},
+                    {2,1,2,1,1,2,1,2,1,1,2,1,2,1,2,1,1,1,2,2},
+                    {2,1,2,1,1,1,1,1,1,1,1,1,1,1,2,1,2,1,1,2},
+                    {2,1,2,1,1,2,2,2,2,1,1,1,2,1,2,1,2,1,2,2},
+                    {2,1,2,2,1,2,1,1,2,1,1,2,2,1,2,1,2,1,2,2},
+                    {2,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1,1,2,2},
+                    {2,1,2,2,1,2,1,1,1,1,2,1,1,1,2,1,2,2,2,2},//d
+                    {2,1,2,1,1,2,1,1,2,1,2,1,1,1,2,1,2,2,2,2},
+                    {2,1,2,1,1,2,2,2,2,1,2,1,1,1,2,1,2,2,2,2},
+                    {2,1,2,1,1,1,1,1,1,1,1,1,2,1,2,1,1,1,2,2},
+                    {2,1,2,2,1,2,1,2,2,1,1,2,2,1,2,2,2,1,2,2},
+                    {2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,2},
+                    {2,1,2,2,2,2,2,2,1,2,2,1,2,1,2,1,2,2,1,2},
+                    {2,1,2,2,2,2,2,2,1,2,2,1,2,1,2,2,2,2,1,2},
+                    {2,1,1,1,1,1,1,2,1,1,1,1,2,1,1,1,1,1,1,2},
+                    {2,1,2,2,2,1,2,2,2,1,2,2,2,1,2,2,1,2,1,2},
+                    {2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,1,2,1,2},
+                    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+                    };
                 
               return aux;  
             }
@@ -227,6 +249,7 @@ public class Juego {
          fondopresentacion = new JLabel();
          fondopresentacion.setBounds(0, 0, ventana.getWidth(), ventana.getHeight());
          ImagenFondoPrese = new ImageIcon(getClass().getResource("/Imagenes/fondo1.png"));
+         //ImagenFondoPrese = new ImageIcon("src/Imagenes/fondo1.png");
          ImagenFondoPrese = new ImageIcon(ImagenFondoPrese.getImage().getScaledInstance(ventana.getWidth(), ventana.getHeight(), Image.SCALE_DEFAULT));
          fondopresentacion.setIcon(ImagenFondoPrese);
          fondopresentacion.setVisible(true);
@@ -247,24 +270,29 @@ public class Juego {
                        }
           
          });
-         
+           
+        ////
         //juego
-        mat=new int[15][15];
+        
+        mat = new int[15][15];
+        mat = tablero(1);
+        ///matAux = tablero(1);
         matrix = new JLabel[15][15];
+        matAux = new int[15][15];
         for (int i = 0; i < mat.length; i++) {
                 for (int j = 0; j < mat.length; j++) {
                     matrix[i][j] = new JLabel();
+                    matAux[i][j] =mat[i][j];
                 }
             }
-            mat = tablero(1);
+        
+        
+            //mat = tablero(1);//llama el nivel del tablero
             //Posicion de PacMan en el tablero
             px=1;
             py=1;
             mat[px][py]=3;
-          //Posicion del fantasma en el tablero
-            fanx=8;
-            fany=6;
-            mat[fanx][fany]=7;
+        
             
             abajo=0;
             arriba=0;
@@ -281,7 +309,7 @@ public class Juego {
         
         
         
-        timer = new Timer (100,new ActionListener ()//TIMER UTILIZADO PARA AJUSTAR LA VELOCIDAD DE MOVIMIENTO
+        timer = new Timer (100, new ActionListener()//TIMER UTILIZADO PARA AJUSTAR LA VELOCIDAD DE MOVIMIENTO
         {
             public void actionPerformed(ActionEvent e)
             {  
@@ -293,6 +321,7 @@ public class Juego {
                                 records.setText("Puntos: "+puntos);
                             }
                         mat[px][py]=0;
+                        matAux[px][py]=mat[px][py];//esto es nuevo 
                         py=py-1;
                         mat[px][py]=5;
                         pintarMatriz();
@@ -307,6 +336,7 @@ public class Juego {
                                 records.setText("Puntos: "+puntos);
                             }
                         mat[px][py]=0;
+                        matAux[px][py]=mat[px][py];//esto es nuevo
                         py=py+1;
                         mat[px][py]=4;
                         pintarMatriz();
@@ -323,6 +353,7 @@ public class Juego {
                                 records.setText("Puntos: "+puntos);
                             }
                         mat[px][py]=0;
+                        matAux[px][py]=mat[px][py];//esto es nuevo
                         px=px-1;
                         mat[px][py]=6;
                         pintarMatriz();
@@ -337,6 +368,7 @@ public class Juego {
                             }
 
                         mat[px][py]=0;
+                        matAux[px][py]=mat[px][py];//esto es nuevo
                         px=px+1;
                         mat[px][py]=3;
                         pintarMatriz();
@@ -355,11 +387,25 @@ public class Juego {
                 }
                 if(enc==0)
                     {
-                     JOptionPane.showMessageDialog(ventana, "Felicidades Ganaste!!");
+                     JOptionPane.showMessageDialog(ventana, "Felicidades "+jugador+" Ganaste!!"+"\nPuntos: "+puntos);
                      Paneljuego.setVisible(false);
                      PanelMenu.setVisible(true);
                      timer.stop();
                     }
+                
+                 //matar pacman
+                if(mat[px][py+1] ==7 || mat[px][py-1] ==7 || mat[px-1][py] ==7 ||mat[px+1][py] ==7)
+                    {
+                       fantasma1.timer.stop();
+                       //fantasma2.timer.stop();
+                       //fantasma3.timer.stop();
+                       JOptionPane.showMessageDialog(ventana, "Estas muerto "+jugador+"\nPuntos obtenidos: "+puntos);
+                       Paneljuego.setVisible(false);
+                       PanelMenu.setVisible(true);
+                       timer.stop();
+                       
+                    }
+                
                 
             }});     
         
@@ -376,7 +422,7 @@ public class Juego {
                 
                 if(e.getKeyCode() == KeyEvent.VK_UP)//MOVER TECLA ARRIBA
                     {
-                        System.out.println("Tecla hacia arriba");
+                       // System.out.println("Tecla hacia arriba");
                        if(mat[px][py-1]==1 || mat[px][py-1]==0 ){  
                             arriba =1;
                             abajo=0;
@@ -387,7 +433,7 @@ public class Juego {
                 
                 if(e.getKeyCode() == KeyEvent.VK_DOWN)//MOVER TECLA ABAJO
                     {
-                        System.out.println("Tecla hacia abajo");
+                       // System.out.println("Tecla hacia abajo");
                        if(mat[px][py+1]==1 || mat[px][py+1]==0 ){ 
                             arriba =0;
                             abajo=1;
@@ -398,7 +444,7 @@ public class Juego {
                 
                 if(e.getKeyCode() == KeyEvent.VK_LEFT)//MOVER TECLA IZQUIERDA
                     {
-                        System.out.println("Tecla hacia izquierda");
+                        //System.out.println("Tecla hacia izquierda");
                        if(mat[px-1][py]==1 || mat[px-1][py]==0 ){ 
                             arriba =0;
                             abajo=0;
@@ -409,7 +455,7 @@ public class Juego {
                 
                 if(e.getKeyCode() == KeyEvent.VK_RIGHT)//MOVER TECLA DERECHA
                     {
-                        System.out.println("Tecla hacia derecha");
+                       // System.out.println("Tecla hacia derecha");
                        
                       if(mat[px+1][py]==1 || mat[px+1][py]==0 ){ 
                         arriba =0;
@@ -446,18 +492,20 @@ public class Juego {
          fondoMenu = new JLabel();
          fondoMenu.setBounds(0, 0, ventana.getWidth(), ventana.getHeight());
          ImagenFondoMenu = new ImageIcon(getClass().getResource("/Imagenes/fondojuego.png"));
+         //ImagenFondoMenu = new ImageIcon("src/Imagenes/fondojuego.png");
          ImagenFondoMenu = new ImageIcon(ImagenFondoMenu.getImage().getScaledInstance(ventana.getWidth(), ventana.getHeight(), Image.SCALE_DEFAULT));
          fondoMenu.setIcon(ImagenFondoMenu);
          fondoMenu.setVisible(true);
          PanelMenu.add(fondoMenu);
             
-         botones[0].setText("Play");
-         botones[1].setText("Load");
-         botones[2].setText("Score");
-         botones[3].setText("Ladenboar");
+         botones[0].setText("Play Nivel 1");
+         botones[1].setText("Play Nivel 2");
+         botones[2].setText("Play Nivel 3");
+         botones[3].setText("Estudiantes");
          botones[4].setText("Exit");
          
          for (int i = 0; i < botones.length; i++) {
+             
             botones[i].setBounds(ventana.getWidth()-(200+50), (i+1)*50, 200, 40);
             botones[i].setVisible(true);
             botones[i].setBackground(Color.white);
@@ -469,8 +517,18 @@ public class Juego {
     
     }
    
-    
-    
+
+    //FOTOS ESTUDIANTES    
+    public void FotosEs(){
+      FotosEstudiantes f = new FotosEstudiantes();
+      f.setLocationRelativeTo(null);
+      f.setTitle("Integrantes del grupo");
+      f.setVisible(true);
+      
+      ventana.setVisible(false);
+        
+    }
+       
     public void eventoMenu()
         {
          //boton jugar
@@ -483,33 +541,48 @@ public class Juego {
                             {
                                 jugador = JOptionPane.showInputDialog(ventana,"Debes ingresar usuarios","Escribe aqui");
                             }
+                          //nivel_1();
                           jugar();
+                          
+                          
                        }
        
          });
-         //boton load
+         //boton load,nivel 2
          botones[1].addMouseListener(new MouseAdapter() {
          
             public void mousePressed(MouseEvent e)
                        {
-                          
+                          jugador = JOptionPane.showInputDialog(ventana,"Nombre del jugador","Escribe aqui");
+                          while(jugador==null || jugador.compareTo("Escribe aqui")==0 || jugador.compareTo("")==0)
+                            {
+                                jugador = JOptionPane.showInputDialog(ventana,"Debes ingresar usuarios","Escribe aqui");
+                            }
+                          //nivel_2();
+                          //jugar();
                        }
          });
          
-         //boton Score
+         //boton Score, nivel 3
          botones[2].addMouseListener(new MouseAdapter() {
          
             public void mousePressed(MouseEvent e)
                        {
-                          
+                          jugador = JOptionPane.showInputDialog(ventana,"Nombre del jugador","Escribe aqui");
+                          while(jugador==null || jugador.compareTo("Escribe aqui")==0 || jugador.compareTo("")==0)
+                            {
+                                jugador = JOptionPane.showInputDialog(ventana,"Debes ingresar usuarios","Escribe aqui");
+                            }
+                         // nivel_3();
+                         // jugar();
                        }
          });
-         //boton laderboar
+         //BOTON ESTUDIANTES
          botones[3].addMouseListener(new MouseAdapter() {
          
             public void mousePressed(MouseEvent e)
                        {
-                          
+                         FotosEs();
                        }
          });
          //boton exit
@@ -528,6 +601,7 @@ public class Juego {
                   else
                     {   
                         menu();
+                        
                     }
                   
                            
