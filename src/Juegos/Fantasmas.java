@@ -6,10 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.Timer;
-
+//import Juegos.Juego;
  
 public class Fantasmas {
-  
+  //Juego j = new Juego();
     //atributos
     int fanx,fany;
     Timer timer;
@@ -42,7 +42,7 @@ public class Fantasmas {
                     fanx -=1;
                     Juego.mat[fanx][fany] =7;
                     Juego.pintarMatriz();
-                   
+                    //j.pintarMatriz();
                    }else
                    //choca con la pared
                    if(fanx > 0 && Juego.mat[fanx-1][fany] == 2)
@@ -67,6 +67,8 @@ public class Fantasmas {
                     fanx +=1;
                     Juego.mat[fanx][fany] =7;
                     Juego.pintarMatriz();
+                    //j.pintarMatriz();
+                    
                    
                    }else
                    //choca con la pared
@@ -91,6 +93,7 @@ public class Fantasmas {
                     fany -=1;
                     Juego.mat[fanx][fany] =7;
                     Juego.pintarMatriz();
+                   //j.pintarMatriz();
                     
                     }else
                      //choca con la pared
@@ -115,6 +118,7 @@ public class Fantasmas {
                        fany +=1;
                     Juego.mat[fanx][fany] =7;
                     Juego.pintarMatriz();
+                    //j.pintarMatriz();
                    
                    }else
                     //choca con la pared
