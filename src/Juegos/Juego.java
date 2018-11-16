@@ -50,8 +50,8 @@ public class Juego {
     //int fanx,fany;
     String jugador;
     JLabel nombre;
-    JLabel records;
-    int puntos;
+    JLabel records,JLvidas;
+    int puntos,vidas;
     int abajo,arriba,izq,der;
     Timer timer;
     
@@ -76,13 +76,13 @@ public class Juego {
         //FONDO
          fondojuego = new JLabel();
          fondojuego.setBounds(0, 0, ventana.getWidth(), ventana.getHeight());
-         ImagenFondojuego = new ImageIcon(getClass().getResource("/Imagenes/fondojuego.png"));
-         //ImagenFondojuego = new ImageIcon("src/Imagenes/fondojuego.png");
+         ImagenFondojuego = new ImageIcon(getClass().getResource("/Imagenes/fondojuego3.png"));
+         //ImagenFondojuego = new ImageIcon("src/Imagenes/fondojuego3.png");
          ImagenFondojuego = new ImageIcon(ImagenFondoMenu.getImage().getScaledInstance(ventana.getWidth(), ventana.getHeight(), Image.SCALE_DEFAULT));
          fondojuego.setIcon(ImagenFondojuego);
          fondojuego.setVisible(true);
          
-         Paneljuego.add(fondojuego);
+         Paneljuego.add(fondojuego,0);
           
           for (int i = 0; i < mat.length; i++) {
               
@@ -112,6 +112,16 @@ public class Juego {
           Paneljuego.add(records,0);
           records.setVisible(true);
           /////
+          ////VIDA DEL JUGADOR
+          //vidas=3;
+          JLvidas = new JLabel("Vidas: "+vidas);
+          JLvidas.setBounds(ventana.getWidth()-(150+20),40,125,30);
+          JLvidas.setForeground(Color.YELLOW);
+          Paneljuego.add(JLvidas,0);
+          JLvidas.setVisible(true);
+          
+          ///
+          
           MoverPacman();
          fantasma1 = new Fantasmas(8,6);
          fantasma2 = new Fantasmas(8,6);
@@ -343,6 +353,15 @@ public class Juego {
             arriba=0;
             izq=0;
             der=0;
+            fondoMenu.setBounds(0, 0, ventana.getWidth(), ventana.getHeight());
+         ImagenFondoMenu = new ImageIcon(getClass().getResource("/Imagenes/fondojuego.png"));
+         //ImagenFondoMenu = new ImageIcon("src/Imagenes/fondojuego.png");
+         ImagenFondoMenu = new ImageIcon(ImagenFondoMenu.getImage().getScaledInstance(ventana.getWidth(), ventana.getHeight(), Image.SCALE_DEFAULT));
+         fondoMenu.setIcon(ImagenFondoMenu);
+         fondoMenu.setVisible(true);
+         PanelMenu.add(fondoMenu);
+         
+         ventana.add(PanelMenu);
     }
     
      public void nivel_2(){
@@ -371,6 +390,19 @@ public class Juego {
             arriba=0;
             izq=0;
             der=0;
+            fondoMenu = new JLabel();
+         fondoMenu.setBounds(0, 0, ventana.getWidth(), ventana.getHeight());
+         ImagenFondoMenu = new ImageIcon(getClass().getResource("/Imagenes/fondojuego2.png"));
+         //ImagenFondoMenu = new ImageIcon("src/Imagenes/fondojuego.png");
+         ImagenFondoMenu = new ImageIcon(ImagenFondoMenu.getImage().getScaledInstance(ventana.getWidth(), ventana.getHeight(), Image.SCALE_DEFAULT));
+         fondoMenu.setIcon(ImagenFondoMenu);
+         fondoMenu.setVisible(true);
+         PanelMenu.add(fondoMenu);
+         
+         ventana.add(PanelMenu);
+        
+            
+            
             
     }
     
@@ -402,6 +434,17 @@ public class Juego {
             izq=0;
             der=0;
             
+            fondoMenu.setBounds(0, 0, ventana.getWidth(), ventana.getHeight());
+         ImagenFondoMenu = new ImageIcon(getClass().getResource("/Imagenes/fondojuego3.png"));
+         //ImagenFondoMenu = new ImageIcon("src/Imagenes/fondojuego.png");
+         ImagenFondoMenu = new ImageIcon(ImagenFondoMenu.getImage().getScaledInstance(ventana.getWidth(), ventana.getHeight(), Image.SCALE_DEFAULT));
+         fondoMenu.setIcon(ImagenFondoMenu);
+         fondoMenu.setVisible(true);
+         PanelMenu.add(fondoMenu);
+         
+         ventana.add(PanelMenu);
+            
+           
     }
     
     
@@ -513,6 +556,7 @@ public class Juego {
                        nivel_1();
                        
                     }
+                
                 
                 
             }});     
